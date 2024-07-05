@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Wheel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1 style="color: aliceblue;"> </h1>
+    <div class="container">
+        <div class="spinButton">Spin</div>
+        <div class="wheel">
+            <!-- css te carki dondurme isleminde dinamik tutup kullanabilmek icin her bolmeye farkklı i degerleri atadik
+            renklendirme islemi icin de --clr css degiskeni atadik-->
+
+            <div id="1" class="number" style="--i:1;--clr:#db7093;"><span>100</span></div>
+            <div id="2" class="number" style="--i:2;--clr:#db7070;"><span>-500</span></div>
+            <div id="3" class="number" style="--i:3;--clr:#292077;"><span>50</span></div>
+            <div id="4" class="number" style="--i:4;--clr:#471f8a;"><span>-100</span></div>
+            <div id="5" class="number" style="--i:5;--clr:#d29118;"><span>2000</span></div>
+            <div id="6" class="number" style="--i:6;--clr:#70dbb0;"><span>10</span></div>
+            <div id="7" class="number" style="--i:7;--clr:#7770db;"><span>5</span></div>
+            <div id="8" class="number" style="--i:8;--clr:#70db74;"><span>-1</span></div>
+        </div>
+    </div>
+
+    <nav class="menu-bar">  
+        <h1>SPIN WHEEL</h1>
+    </nav>
+
+    <div class="sidebar">
+        <div id="R">
+            <img id="resim">
+            <h2>Account</h2>
+            <p id="333">Balance: 100</p>
+            <div id="message">10</div>
+        </div>
+    </div>
+
+    <audio id="audio" src="sound-step.mp3"></audio>
+
+
+    <script>
+        var cıkanDeger; //Ekrana kısa süreli yazılacak yazının değerini tutar.
+        var banka = 100;
+        let aci;
+        const deg = 45;
+        let wheel = document.querySelector('.wheel');
+        let spinButton = document.querySelector('.spinButton');
+        var hesap = document.getElementById('333');
+        const audio = document.getElementById('audio');
+        let moneyData = localStorage.getItem('money'); //Tarayıcıda depolanan para bilgisini alır.
+        let money = moneyData ? JSON.parse(moneyData) : 100; //Eğer depolanan bir para bilgisi varsa onu kullanır, yoksa 100 ile başlar.
+
+        updateBankAccount(money); // Sayfa yüklendiğinde banka hesabını günceller.
+
+        banka = money;
+        spinButton.onclick = function () {
+            const rastgele = Math.ceil(Math.random() * 10000)  //Rastgele dönme açısı verir. 
+            console.log(rastgele)
+            value = rastgele;
+            wheel.style.transform = "rotate(" + (-value) + "deg)";//Açı aralıklarını sağa dönüşe göre verdik.
+            //Doğru işlemlerin yapılabilmesi için çıkan değerleri eksi (-) ile çarptık.
+
+            if (value < 0) {
+                wheel.style.transform = "rotate(" + value + "deg)";
+            }
+
+            aci = value % 360; //Tekerleğin dönme açısının 360'a göre modunu alarak hesapladık.
+            console.log(aci)
+            islem();
+
+            console.log("Toplam Bakiyeniz: " + banka + " Spin Coin")
+            localStorage.setItem('money', JSON.stringify(banka));
+
+            audio.play();
+        }
+
+        function islem() { //İşlemler açı aralıklarına göre ayarlandı.
+            if (aci >= 337.5 && aci < 22.5) {
+                banka = banka + 100;
+                cıkanDeger = +100;
+            }
+            if (aci >= 22.5 && aci < 67.5) {
+                banka = banka - 500;
+                cıkanDeger = -500;
+            }
+            if (aci >= 67.5 && aci < 112.5) {
+                banka = banka + 50;
+                cıkanDeger = +50;
+            }
+            if (aci >= 112.5 && aci < 157.5) {
+                banka = banka - 100;
+                cıkanDeger = -100;
+            }
+            if (aci >= 157.5 && aci < 202.5) {
+                banka = banka + 2000;
+                cıkanDeger = +2000;
+            }
+            if (aci >= 202.5 && aci < 247.5) {
+                banka = banka + 10;
+                cıkanDeger = +10;
+            }
+            if (aci >= 247.5 && aci < 292.5) {
+                banka = banka + 5;
+                cıkanDeger = +5;
+            }
+            if (aci >= 292.5 && aci < 337.5) {
+                banka = banka - 1;
+                cıkanDeger = -1;
+            }
+        }
+
+        function updateBankAccount(balance) { // Banka hesabını günceller.
+            hesap.textContent = "Balance: " + balance + " SC";
+        }
+
+        var message = document.getElementById('message'); // ID'si 'message' olan mesaj öğesini seçer.
+
+        wheel.addEventListener('transitionend', function (event) { //Çarktta çıkan değeri kısa süreli ekrana yazdırır.
+
+            audio.pause(); //Çarkın dönmesi bittiğinde sesi de oynatmayı durdurur.
+            hesap.textContent = "Balance: " + banka + " SC";
+            message.textContent = cıkanDeger;
+
+            var currentOpacity = parseFloat(message.style.opacity) || 1; //'message' öğesinin mevcut opaklık değerini alır.
+            //Eğer opaklık değeri tanımlı değilse varsayılan olarak 1 alır.
+            var newOpacity = currentOpacity + 1; //Opaklık değerini 1 arttırır.
+            message.style.opacity = newOpacity; //Artırılmış opaklık değerini 'message' öğesine uygular.
+
+            setTimeout(function () { 
+                // Mevcut opaklık değerini al
+                var currentOpacity = parseFloat(message.style.opacity) || 1; //'message' öğesinin mevcut opaklık değerini alır. 
+                //Eğer opaklık değeri tanımlı değilse varsayılan olarak 1 alır.
+                var newOpacity = currentOpacity - 2; //Opaklık değerini 2 azaltır.
+                message.style.opacity = newOpacity; //Azaltılmış opaklık değerini 'message' öğesine uygular.
+            }, 1500); //1,5 saniye sonra mesajı gizler.
+
+        });
+
+    </script>
+</body>
+
+</html>

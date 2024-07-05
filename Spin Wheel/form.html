@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Wheel</title>
+
+    <style>
+        @keyframes titrek {
+            0% {
+                transform: translateX(0);
+            }fcccc
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-3px);
+            }
+
+            100% {
+                transform: translateX(3px);
+            }
+        }
+
+        body {
+            background-color: #333;
+            background-image: url('bckground_blur.png');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #textl {
+            background-color: #ffffff;
+            border-radius: 35px;
+            padding: 8px;
+        }
+
+        #text2 {
+            background-color: #ffffff;
+            border-radius: 35px;
+            padding: 8px;
+        }
+
+        #login-id {
+            border: 5px solid #ffffffb7;
+            background-color: #ffffff27;
+            border-radius: 20px;
+            margin: auto;
+            width: 400px;
+            height: 200px;
+            padding-top: 50px;
+            padding-right: 60px;
+            padding-bottom: 60px;
+            padding-left: 180px;
+        }
+
+        #ad {
+            border-radius: 10px;
+            position: relative;
+            margin: 20px;
+            padding: 8px;
+        }
+
+        #sifre {
+            border-radius: 10px;
+            position: relative;
+            margin: 8px;
+            padding: 8px;
+        }
+
+        #btn {
+            border-radius: 50px;
+            background: rgb(0, 0, 0);
+            background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(55, 55, 55, 1) 100%);
+            color: aliceblue;
+            margin-top: 20px;
+            margin-left: 120px;
+            padding: 8px;
+            padding-left: 20px;
+            padding-right: 20px;
+            transition: all 1s;
+            cursor: pointer;
+        }
+
+        #btn:hover {
+            background: white;
+            color: #28282c;
+        }
+
+        .titre {
+            animation: titrek 0.5s ease infinite alternate;
+        }
+
+        .error {
+            background-color: rgb(190, 69, 69);
+        }
+    </style>
+
+</head>
+
+<body>
+    <form id="login-id" onsubmit="event.preventDefault();deneme();">
+        <label id="textl">Kullanıcı adı:</label>
+        <input id="ad" type="text"> <br>
+        <label id="text2">Kullanıcı şifresi:</label>
+        <input id="sifre" type="password"> <br>
+        <button id="btn" type="submit">GİRİŞ</button>
+
+    </form>
+
+    <script>
+        var attempt = 3;
+
+        function deneme() {
+
+            var b = document.getElementById("ad").value;
+            var a = document.getElementById("sifre").value;
+
+            if (b === "kullanıcı" && a === "1234") {
+                window.location.href = "index.html";
+                return false;
+
+            }
+
+            else {
+
+                attempt--;
+                if (b !== "kullanıcı" && a === "1234") {
+                    
+                    document.getElementById("ad").value = "";
+                    
+                    document.getElementById("ad").classList.add("error");
+
+                }
+                else if (b === "kullanıcı" && a !== "1234") {
+                    
+                    document.getElementById("sifre").value = "";
+                    document.getElementById("sifre").classList.add("titre");
+                }
+                else if (b !== "kullanıcı" && a !== "1234") {
+                    
+                    document.getElementById("sifre").value = "";
+                    document.getElementById("ad").classList.add("error");
+                    document.getElementById("sifre").classList.add("titre");
+                }
+                if (attempt == 0) {
+                    
+                    document.getElementById("ad").disabled = true;
+                    document.getElementById("sifre").disabled = true;
+                    document.getElementById("btn").disabled = true;
+                }
+
+                setTimeout(function () {
+                    var titrekMetin = document.querySelector('.titre');
+                    titrekMetin.style.animation = 'none';
+                    titrekMetin.style.transform = 'translateX(0)';
+                }, 1000);
+            }
+
+
+        }
+
+    </script>
+</body>
+
+</html>
