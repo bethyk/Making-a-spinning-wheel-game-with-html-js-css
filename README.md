@@ -130,16 +130,11 @@ No external database or server is required for the current version.
 
 To reset the saved balance, clear the application's local storage data.
 
-## Possible Improvements
+## Project Context
 
-- Replace client-side login credentials with secure authentication
-- Add a visible reset-balance button
-- Improve accessibility and keyboard navigation
-- Add mobile-friendly controls
-- Separate JavaScript and CSS from the HTML files
-- Add automated tests for wheel-angle calculations
-- Add configurable wheel segments and probabilities
-- Improve error handling for missing audio or image files
+This project was developed as a second-year university final assignment. It is preserved as an academic project and is not currently under active development.
+
+The repository reflects the scope and requirements of the original coursework.
 
 ## License
 
